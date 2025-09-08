@@ -1,6 +1,8 @@
 ---
 title: "PS2_template"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2025-04-25"
 ---
 
@@ -27,6 +29,24 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
 
 ```{bash, eval=FALSE}
 ## Download your data
+
+mamba activate sra-toolkit_bgmp
+
+prefetch SRR25630305
+
+prefetch SRR25630397
+
+fasterq-dump --split-files ./SRR25630305.sra
+
+fasterq-dump --split-files ./SRR25630397.sra
+
+gzip SRR25630305_1.fastq
+
+gzip SRR25630305_2.fastq
+
+gzip SRR25630397_1.fastq
+
+gzip SRR25630397_2.fastq
 ```
 
 ## Part 1 – Read quality score distributions
@@ -38,19 +58,65 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
 
 ```{bash, eval=FALSE}
 
+mamba create -n QAA
+
+mamba activate QAA
+
+mamba install fastqc
+
+mamba install cutadapt
+
+mamba install trimmomatic 
+
 ```
 
 2. Using `FastQC` via the command line on Talapas, produce plots of the per-base quality score distributions for R1 and R2 reads. Also, produce plots of the per-base N content, and comment on whether or not they are consistent with the quality score plots.
 
 [Include FastQC commands, plots of per-base N content, comments on consistency with quality score plots]
 
+```{bash, eval=FALSE}
+
+/usr/bin/time -v fastqc SRR25630305/*fastq.gz -o /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305
+
+/usr/bin/time -v fastqc SRR25630397/*fastq.gz -o /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397
+
+
+```
+
+```{r, out.width='90%', fig.align='center'}
+
+knitr::include_graphics("QAA_figs/Cco_com125_EO_6cm_1_per_base_n_content.png")
+knitr::include_graphics("QAA_figs/Cco_com125_EO_6cm_1_per_base_quality.png")
+knitr::include_graphics("QAA_figs/Cco_com125_EO_6cm_2_per_base_n_content.png")
+knitr::include_graphics("QAA_figs/Cco_com125_EO_6cm_2_per_base_quality.png")
+knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_1_per_base_n_content.png")
+knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_1_per_base_quality.png")
+knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_2_per_base_n_content.png")
+knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_2_per_base_quality.png")
+
+```
+
+The near-zero N content is consistent with the high base-quality profiles. Bases are confidently called (not “N”) across the reads, including at the ends where quality dips slightly but remains high.
+
 3. Run your quality score plotting script from your Demultiplexing assignment in Bi622. (Make sure you're using the "running sum" strategy!!) Describe how the `FastQC` quality score distribution plots compare to your own. If different, propose an explanation. Also, does the run time differ? Mem/CPU usage? If so, why?
 
-[Include quality score distribution plot, a comparison to FastQC, comments on any differences between your quality score plotting and FastQC]
+```{r, out.width='90%', fig.align='center'}
+
+knitr::include_graphics("QAA_figs/R1_Cco_com125_EO_6cm_mean_quality_scores.png")
+knitr::include_graphics("QAA_figs/R2_Cco_com125_EO_6cm_mean_quality_scores.png")
+knitr::include_graphics("QAA_figs/R1_Crh_rhy107_EO_adult_mean_quality_scores.png")
+knitr::include_graphics("QAA_figs/R2_Crh_rhy107_EO_adult_mean_quality_scores.png")
+
+
+```
+
+The FastQC quality plots and my plots are similar. They all have very high scores at the beginning of that reads (~Q36) with a gradual decline toward the end of the reads, and R2 tails off slightly more than R1. Per-base N content is ~0% in FastQC, which matches the high quality seen in both sets of plots. Small visual differences are expected because FastQC shows median with IQR (box-and-whiskers) while mine plot the mean, FastQC bins later cycles (e.g., 105–109) which smooths the right side. Overall, the results are consistent; any offsets are methodological, not biological. FastQC ran a bit faster because it’s an optimized, compiled Java program, whereas my Python script is single-threaded and spends more time in gzip decompression and Python loops. FastQC typically uses more CPU and RAM but finishes sooner; the Python script uses less CPU/RAM but takes longer.
 
 4. Comment on the overall data quality of your two libraries. Go beyond per-base qscore distributions. Examine the `FastQC` [documentation](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/) for guidance on interpreting results and planning next steps. Make and justify a recommendation on whether these data are of high enough quality to use for further analysis. 
 
 [Include comments on data quality and recommendation on whether this can be used for further analysis]
+
+Both libraries meet the bar for downstream RNA-seq. Quality scores are high across most bases with only a small drop at the end. The N content is ~0% across positions, the Adapter Content panel doesn’t show a worrying rise, there aren’t big unknown “overrepresented” sequences, duplication levels are typical for RNA-seq (representing highly expressed transcripts), the GC content looks close to what we expect, and the read lengths are consistent. Overall, the data look clean and are good to use for downstream analysis.
 
 ## Part 2 – Adaptor trimming comparison
 
@@ -58,7 +124,13 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
     - `cutadapt --version` (should be 5.0)
     - `trimmomatic -version` (should be 0.39)
 
-[Record details on install (if happened here) and/or version checking]
+```{bash, eval=FALSE}
+
+cutadapt --version = 5.1
+
+trimmomatic -version = 0.40
+
+```
 
 6. Using `Cutadapt`, properly trim adapter sequences from your assigned files. Be sure to read how to use `Cutadapt`. Use default settings. What proportion of reads (both R1 and R2) were trimmed?
 
@@ -76,7 +148,20 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
 
 ```{bash, eval=FALSE}
 
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -o Cco_com125_EO_6cm_1.trim.fastq.gz -p Cco_com125_EO_6cm_1.trim.fastq.gz Cco_com125_EO_6cm_1.fastq.gz Cco_com125_EO_6cm_2.fastq.gz
+
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -o Crh_rhy107_EO_adult_1.trim.fastq.gz -p Crh_rhy107_EO_adult_2.trim.fastq.gz Crh_rhy107_EO_adult_1.fastq.gz Crh_rhy107_EO_adult_2.fastq.gz
+
+
 ```
+
+For Cco_com125_EO_6cm:
+Read 1 - 18.2% reads trimmed
+Read 2 - 18.5% reads trimmed
+
+For Crh_rhy107_EO_adult:
+Read 1 - 12.5% reads trimmed
+Read 2 - 13.0% reads trimmed
 
 7. Use `Trimmomatic` to quality trim your reads. Specify the following, **in this order**:
     - LEADING: quality of 3
@@ -88,21 +173,58 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
 
 ```{bash, eval=FALSE}
 
+/usr/bin/time -v trimmomatic PE \
+-threads 4 \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.paired.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.unpaired.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.paired.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.unpaired.fastq.gz \
+HEADCROP:8 \
+LEADING:3 \
+TRAILING:3 \
+SLIDINGWINDOW:5:15 \
+MINLEN:35
+
+/usr/bin/time -v trimmomatic PE \
+-threads 4 \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.paired.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.unpaired.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.paired.fastq.gz \
+/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.unpaired.fastq.gz \
+HEADCROP:8 \
+LEADING:3 \
+TRAILING:3 \
+SLIDINGWINDOW:5:15 \
+MINLEN:35
+
 ```
 
 8. Plot the trimmed read length distributions for both paired R1 and paired R2 reads (on the same plot - yes, you will have to use Python or R to plot this. See ICA4 from Bi621). You can produce 2 different plots for your 2 different RNA-seq samples. There are a number of ways you could possibly do this. One useful thing your plot should show, for example, is whether R1s are trimmed more extensively than R2s, or vice versa. Comment on whether you expect R1s and R2s to be adapter-trimmed at different rates and why.
 
 [Include your plot and comment on R1/R2 adapter trimming]
 
-```{R, eval=TRUE}
+```{r, out.width='90%', fig.align='center'}
+
+knitr::include_graphics("QAA_figs/Cco_com125_EO_6cm_trimmed_lengths.png")
+knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_trimmed_lengths.png")
+
 
 ```
+
+R1 and R2 look basically the same. Both end up around 142 nt, so most trimming came from the fixed HEADCROP:8, not from cutting off adapters. In general, R1 and R2 should have about the same amount of adapter trimming because adapters show up when the DNA/RNA fragment is shorter than the read, which affects both reads equally. Any tiny differences are usually just because R2’s end is a bit lower quality, not because it has more adapters.
+
 
 9. Bonus - Run `FastQC` on your trimmed data. Comment on differences you observe between the trimmed and untrimmed data. Include any figures needed to support your conclusions.
 
 [Include command, comments on differences, and plot/s]
 
 ```{bash, eval=FALSE}
+
+
 
 ```
 
@@ -119,6 +241,18 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
 
 ```{bash, eval=FALSE}
 
+mamba install star
+
+mamba install picard=2.18
+
+mamba install samtools
+
+mamba install numpy
+
+mamba install matplotlib
+
+mamba install htseq #numpy was downgraded to version 1.26.4
+
 ```
 
 11. Download the publicly available *Campylomormyrus compressirostris* genome fasta and gff file from [Dryad](https://datadryad.org/dataset/doi:10.5061/dryad.c59zw3rcj) and generate an alignment database from it. If the download fails, the files are available `/projects/bgmp/shared/Bi623/PS2/campylomormyrus.fasta`, `/projects/bgmp/shared/Bi623/PS2/campylomormyrus.gff`. Align the reads to your *C. compressirostris* database using a splice-aware aligner. Use the settings specified in PS8 from Bi621. 
@@ -130,6 +264,45 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
     
 ```{bash, eval=FALSE}
 
+##I was unable to download the files from Dryad due to an error (ERROR 403: Forbidden.)
+cp /projects/bgmp/shared/Bi623/PS2/campylomormyrus.fasta .
+
+cp /projects/bgmp/shared/Bi623/PS2/campylomormyrus.gff .
+
+mamba install -c bioconda gffread -y
+
+gffread -E campylomormyrus.gff -T -o- > campylomormyrus.gtf
+
+STAR --runThreadN 8 \
+    --runMode genomeGenerate \
+    --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Campylomormyrus.Dryad.STAR_2.7.11b \
+    --genomeFastaFiles ./campylomormyrus.fasta \
+    --sjdbGTFfile ./campylomormyrus.gtf
+    
+STAR --runThreadN 8 --runMode alignReads \
+    --outFilterMultimapNmax 3 \
+    --outSAMunmapped Within KeepPairs \
+    --alignIntronMax 1000000 --alignMatesGapMax 1000000 \
+    --readFilesCommand zcat \
+    --readFilesIn /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm_2.trim.paired.fastq.gz \
+    --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Campylomormyrus.Dryad.STAR_2.7.11b \
+    --outFileNamePrefix Cco_alignments
+    
+/usr/bin/time -v STAR --runThreadN 8 \
+    --runMode genomeGenerate \
+    --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Campylomormyrus.Dryad.STAR_2.7.11b \
+    --genomeFastaFiles ./campylomormyrus.fasta \
+    --sjdbGTFfile ./campylomormyrus.gtf
+    
+/usr/bin/time -v STAR --runThreadN 8 --runMode alignReads \
+    --outFilterMultimapNmax 3 \
+    --outSAMunmapped Within KeepPairs \
+    --alignIntronMax 1000000 --alignMatesGapMax 1000000 \
+    --readFilesCommand zcat \
+    --readFilesIn /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult_2.trim.paired.fastq.gz \
+    --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Campylomormyrus.Dryad.STAR_2.7.11b \
+    --outFileNamePrefix Crh_alignments
+
 ```
 
 12. Remove PCR duplicates using [Picard MarkDuplicates](https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates). You may need to sort your reads with `samtools` before running Picard. 
@@ -138,15 +311,50 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
 
 ```{bash, eval=FALSE}
 
+samtools sort -O SAM -o Cco_alignmentsAligned.out.sorted.sam Cco_alignmentsAligned.out.sam
+
+samtools sort -O SAM -o Crh_alignmentsAligned.out.sorted.sam Crh_alignmentsAligned.out.sam
+
+picard MarkDuplicates \
+  INPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.sam \
+  OUTPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.rmdup.sam \
+  METRICS_FILE=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.metrics \
+  REMOVE_DUPLICATES=TRUE \
+  VALIDATION_STRINGENCY=LENIENT
+  
+picard MarkDuplicates \
+  INPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.out.sorted.sam \
+  OUTPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.out.sorted.rmdup.sam \
+  METRICS_FILE=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.metrics \
+  REMOVE_DUPLICATES=TRUE \
+  VALIDATION_STRINGENCY=LENIENT
+
 ```
 
 13. Using your script from PS8 in Bi621, report the number of mapped and unmapped reads from each of your 2 SAM files post deduplication with picard. Make sure that your script is looking at the bitwise flag to determine if reads are primary or secondary mapping (update/fix your script if necessary).
 
-[Include the number of mapped and unmapped reads from both same files]
+For Cco_com125_EO_6cm.out.sorted.rmdup.sam:
+Number of unique mapped reads: 1903088
+Number of unique unmapped reads: 958755
+
+For Crh_rhy107_EO_adult.out.sorted.rmdup.sam:
+Number of unique mapped reads: 2855485
+Number of unique unmapped reads: 913124
 
 14. Count deduplicated reads that map to features using `htseq-count`. You should run htseq-count twice: once with `--stranded=yes` and again with `--stranded=reverse`. Use default parameters otherwise. You may need to use the `-i` parameter for this run.
 
 ```{bash, eval=FALSE}
+
+/usr/bin/time -v htseq-count -s yes -i gene_id\
+  /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.rmdup.sam \
+  /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/campylomormyrus.gtf \
+  > /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.htseq.stranded_yes.txt
+
+/usr/bin/time -v htseq-count -s reverse -i gene_id\
+  /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.rmdup.sam \
+  /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/campylomormyrus.gtf \
+  > /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.htseq.stranded_reverse.txt
+  
 
 ```
 
@@ -156,6 +364,16 @@ You are responsible for downloading this data from NCBI SRA, dumping into FASTQ 
   > Recall ICA4 from Bi621.
 
 [Describe whether your reads are "string-specific", why you think they are, any evidence, and which stranded parameter is appropriate and why]
+
+| calc |  assigned |     total | percent |
+| ---: | --------: | --------: | :-----: |
+|    1 |    93,309 | 4,508,188 |  2.07%  |
+|    2 | 1,942,036 | 4,508,188 |  43.08% |
+|    3 |   153,957 | 6,360,672 |  2.42%  |
+|    4 | 3,344,574 | 6,360,672 |  52.58% |
+
+
+These data are strand-specific (reverse-stranded). With htseq-count, --stranded=reverse assigned 43.08% of reads to genes vs 2.07% with --stranded=yes for the Cco_com125_EO_6cm dataset. With htseq-count, --stranded=reverse assigned 52.58% of reads to genes vs 2.42% with --stranded=yes for the Crh_rhy107_EO_adult dataset. Given the kit’s dUTP chemistry, this matches expectations. We will use htseq-count --stranded=reverse for downstream differential expression. 
 
 16. BONUS - Turn your commands from part 1 and 2 into a script with a loop going through your two SRA files
 
