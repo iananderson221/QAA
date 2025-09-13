@@ -82,6 +82,53 @@ mamba install trimmomatic
 
 
 ```
+	Command being timed: "fastqc SRR25630305/SRR25630305_1.fastq.gz SRR25630305/SRR25630305_2.fastq.gz -o /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305"
+	User time (seconds): 49.50
+	System time (seconds): 2.49
+	Percent of CPU this job got: 107%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:48.30
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 496136
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 179790
+	Voluntary context switches: 15282
+	Involuntary context switches: 75
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 4624
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+	Command being timed: "fastqc SRR25630397/SRR25630397_1.fastq.gz SRR25630397/SRR25630397_2.fastq.gz -o /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397"
+	User time (seconds): 65.35
+	System time (seconds): 3.51
+	Percent of CPU this job got: 108%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:03.23
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 518916
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 187449
+	Voluntary context switches: 18220
+	Involuntary context switches: 113
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 4656
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
 
 ```{r, out.width='90%', fig.align='center'}
 
@@ -95,6 +142,7 @@ knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_2_per_base_n_content.png")
 knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_2_per_base_quality.png")
 
 ```
+
 
 The near-zero N content is consistent with the high base-quality profiles. Bases are confidently called (not “N”) across the reads, including at the ends where quality dips slightly but remains high.
 
@@ -163,6 +211,54 @@ For Crh_rhy107_EO_adult:
 Read 1 - 12.5% reads trimmed
 Read 2 - 13.0% reads trimmed
 
+	Command being timed: "cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -o SRR25630305_1.trim.fastq.gz -p SRR25630305_2.trim.fastq.gz SRR25630305_1.fastq.gz SRR25630305_2.fastq.gz"
+	User time (seconds): 44.04
+	System time (seconds): 0.17
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:46.59
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 38132
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 7525
+	Voluntary context switches: 987
+	Involuntary context switches: 35
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+		Command being timed: "cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT -o SRR25630397_1.trim.fastq.gz -p SRR25630397_2.trim.fastq.gz SRR25630397_1.fastq.gz SRR25630397_2.fastq.gz"
+	User time (seconds): 55.64
+	System time (seconds): 0.81
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:56.75
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 38088
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 7530
+	Voluntary context switches: 431
+	Involuntary context switches: 48
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
 7. Use `Trimmomatic` to quality trim your reads. Specify the following, **in this order**:
     - LEADING: quality of 3
     - TRAILING: quality of 3
@@ -203,6 +299,64 @@ MINLEN:35
 
 ```
 
+TrimmomaticPE: Started with arguments:
+ -threads 4 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.unpaired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.unpaired.fastq.gz HEADCROP:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:15 MINLEN:35
+Quality encoding detected as phred33
+Input Read Pairs: 4212076 Both Surviving: 4148753 (98.50%) Forward Only Surviving: 40471 (0.96%) Reverse Only Surviving: 19442 (0.46%) Dropped: 3410 (0.08%)
+TrimmomaticPE: Completed successfully
+	Command being timed: "trimmomatic PE -threads 4 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_1.trim.unpaired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/SRR25630305_2.trim.unpaired.fastq.gz HEADCROP:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:15 MINLEN:35"
+	User time (seconds): 256.55
+	System time (seconds): 2.83
+	Percent of CPU this job got: 345%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:14.98
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1164972
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 315762
+	Voluntary context switches: 22050
+	Involuntary context switches: 5365
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 128
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+	TrimmomaticPE: Started with arguments:
+ -threads 4 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.unpaired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.unpaired.fastq.gz HEADCROP:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:15 MINLEN:35
+Quality encoding detected as phred33
+Input Read Pairs: 5623413 Both Surviving: 5555673 (98.80%) Forward Only Surviving: 46660 (0.83%) Reverse Only Surviving: 18937 (0.34%) Dropped: 2143 (0.04%)
+TrimmomaticPE: Completed successfully
+	Command being timed: "trimmomatic PE -threads 4 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_1.trim.unpaired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/SRR25630397_2.trim.unpaired.fastq.gz HEADCROP:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:5:15 MINLEN:35"
+	User time (seconds): 369.28
+	System time (seconds): 6.32
+	Percent of CPU this job got: 419%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:29.46
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1154084
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 541804
+	Voluntary context switches: 51414
+	Involuntary context switches: 1143
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 128
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
 8. Plot the trimmed read length distributions for both paired R1 and paired R2 reads (on the same plot - yes, you will have to use Python or R to plot this. See ICA4 from Bi621). You can produce 2 different plots for your 2 different RNA-seq samples. There are a number of ways you could possibly do this. One useful thing your plot should show, for example, is whether R1s are trimmed more extensively than R2s, or vice versa. Comment on whether you expect R1s and R2s to be adapter-trimmed at different rates and why.
 
 [Include your plot and comment on R1/R2 adapter trimming]
@@ -217,8 +371,55 @@ knitr::include_graphics("QAA_figs/Crh_rhy107_EO_adult_trimmed_lengths.png")
 
 R1 and R2 look basically the same. Both end up around 142 nt, so most trimming came from the fixed HEADCROP:8, not from cutting off adapters. In general, R1 and R2 should have about the same amount of adapter trimming because adapters show up when the DNA/RNA fragment is shorter than the read, which affects both reads equally. Any tiny differences are usually just because R2’s end is a bit lower quality, not because it has more adapters.
 
+	Command being timed: "./plot_trimmed_lengths.py --sample Cco_com125_EO_6cm --r1 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm_1.trim.paired.fastq.gz --r2 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm_2.trim.paired.fastq.gz"
+	User time (seconds): 13.83
+	System time (seconds): 0.11
+	Percent of CPU this job got: 98%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:14.08
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 71840
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 15148
+	Voluntary context switches: 475
+	Involuntary context switches: 65
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
 
-9. Bonus - Run `FastQC` on your trimmed data. Comment on differences you observe between the trimmed and untrimmed data. Include any figures needed to support your conclusions.
+
+9. Bonus - Run `FastQC` on your trimmed data. Comment on differences you	Command being timed: "./plot_trimmed_lengths.py --sample Crh_rhy107_EO_adult --r1 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult_1.trim.paired.fastq.gz --r2 /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult_2.trim.paired.fastq.gz"
+	User time (seconds): 18.73
+	System time (seconds): 0.20
+	Percent of CPU this job got: 75%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:24.96
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 72100
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 15728
+	Voluntary context switches: 2629
+	Involuntary context switches: 106
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0 observe between the trimmed and untrimmed data. Include any figures needed to support your conclusions.
 
 [Include command, comments on differences, and plot/s]
 
@@ -305,6 +506,104 @@ STAR --runThreadN 8 --runMode alignReads \
 
 ```
 
+!!!!! WARNING: --genomeSAindexNbases 14 is too large for the genome size=862592683, which may cause seg-fault at the mapping step. Re-run genome generation with recommended --genomeSAindexNbases 13
+	Command being timed: "STAR --runThreadN 8 --runMode genomeGenerate --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Campylomormyrus.Dryad.STAR_2.7.11b --genomeFastaFiles ./campylomormyrus.fasta --sjdbGTFfile ./campylomormyrus.gtf"
+	User time (seconds): 1361.42
+	System time (seconds): 22.93
+	Percent of CPU this job got: 276%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 8:21.15
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 24998036
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 14442625
+	Voluntary context switches: 9654
+	Involuntary context switches: 62395
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+	Command being timed: "STAR --runThreadN 8 --runMode alignReads --outFilterMultimapNmax 3 --outSAMunmapped Within KeepPairs --alignIntronMax 1000000 --alignMatesGapMax 1000000 --readFilesCommand zcat --readFilesIn /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm_2.trim.paired.fastq.gz --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Campylomormyrus.Dryad.STAR_2.7.11b --outFileNamePrefix Cco_alignments"
+	User time (seconds): 519.80
+	System time (seconds): 4.00
+	Percent of CPU this job got: 378%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:18.21
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 11218316
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 229342
+	Voluntary context switches: 39388
+	Involuntary context switches: 33847
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+!!!!! WARNING: --genomeSAindexNbases 14 is too large for the genome size=862592683, which may cause seg-fault at the mapping step. Re-run genome generation with recommended --genomeSAindexNbases 13
+	Command being timed: "STAR --runThreadN 8 --runMode genomeGenerate --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Campylomormyrus.Dryad.STAR_2.7.11b --genomeFastaFiles ./campylomormyrus.fasta --sjdbGTFfile ./campylomormyrus.gtf"
+	User time (seconds): 1363.29
+	System time (seconds): 24.38
+	Percent of CPU this job got: 277%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 8:20.25
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 23024808
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 15266420
+	Voluntary context switches: 9913
+	Involuntary context switches: 62511
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+	Command being timed: "STAR --runThreadN 8 --runMode alignReads --outFilterMultimapNmax 3 --outSAMunmapped Within KeepPairs --alignIntronMax 1000000 --alignMatesGapMax 1000000 --readFilesCommand zcat --readFilesIn /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult_1.trim.paired.fastq.gz /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult_2.trim.paired.fastq.gz --genomeDir /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Campylomormyrus.Dryad.STAR_2.7.11b --outFileNamePrefix Crh_alignments"
+	User time (seconds): 456.07
+	System time (seconds): 4.24
+	Percent of CPU this job got: 373%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:03.27
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 11229164
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 219898
+	Voluntary context switches: 54338
+	Involuntary context switches: 35251
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
 12. Remove PCR duplicates using [Picard MarkDuplicates](https://broadinstitute.github.io/picard/command-line-overview.html#MarkDuplicates). You may need to sort your reads with `samtools` before running Picard. 
 - Use the following for running picard: picard MarkDuplicates INPUT=[FILE] OUTPUT=[FILE] METRICS_FILE=[FILENAME].metrics REMOVE_DUPLICATES=TRUE VALIDATION_STRINGENCY=LENIENT
  
@@ -330,6 +629,54 @@ picard MarkDuplicates \
   VALIDATION_STRINGENCY=LENIENT
 
 ```
+
+	Command being timed: "picard MarkDuplicates INPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.sam OUTPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.rmdup.sam METRICS_FILE=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.metrics REMOVE_DUPLICATES=TRUE VALIDATION_STRINGENCY=LENIENT"
+	User time (seconds): 84.96
+	System time (seconds): 14.82
+	Percent of CPU this job got: 116%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:25.39
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 965716
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 126748
+	Voluntary context switches: 20190
+	Involuntary context switches: 468
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 130424
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+	Command being timed: "picard MarkDuplicates INPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.out.sorted.sam OUTPUT=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.out.sorted.rmdup.sam METRICS_FILE=/projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.metrics REMOVE_DUPLICATES=TRUE VALIDATION_STRINGENCY=LENIENT"
+	User time (seconds): 111.99
+	System time (seconds): 19.38
+	Percent of CPU this job got: 117%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:51.36
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1101676
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 155259
+	Voluntary context switches: 36335
+	Involuntary context switches: 657
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 358720
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
 
 13. Using your script from PS8 in Bi621, report the number of mapped and unmapped reads from each of your 2 SAM files post deduplication with picard. Make sure that your script is looking at the bitwise flag to determine if reads are primary or secondary mapping (update/fix your script if necessary).
 
@@ -357,6 +704,102 @@ Number of unique unmapped reads: 913124
   
 
 ```
+
+	Command being timed: "htseq-count -s yes -i gene_id /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.rmdup.sam /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/campylomormyrus.gtf"
+	User time (seconds): 135.61
+	System time (seconds): 0.95
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:17.12
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 153724
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 140402
+	Voluntary context switches: 1494
+	Involuntary context switches: 59
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+Command being timed: "htseq-count -s reverse -i gene_id /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/Cco_com125_EO_6cm.out.sorted.rmdup.sam /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630305/campylomormyrus.gtf"
+	User time (seconds): 146.92
+	System time (seconds): 0.93
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:28.13
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 151708
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 130322
+	Voluntary context switches: 390
+	Involuntary context switches: 59
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+	Command being timed: "htseq-count -s yes -i gene_id /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.out.sorted.rmdup.sam /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/campylomormyrus.gtf"
+	User time (seconds): 190.78
+	System time (seconds): 1.11
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:12.40
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 151776
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 140667
+	Voluntary context switches: 328
+	Involuntary context switches: 81
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	
+	Command being timed: "htseq-count -s reverse -i gene_id /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/Crh_rhy107_EO_adult.out.sorted.rmdup.sam /projects/bgmp/ica/bioinfo/Bi623/PS2/QAA/SRR25630397/campylomormyrus.gtf"
+	User time (seconds): 191.95
+	System time (seconds): 1.03
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:13.45
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 151780
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 145829
+	Voluntary context switches: 452
+	Involuntary context switches: 61
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
 
 15. Demonstrate convincingly whether or not the data are from "strand-specific" RNA-Seq libraries **and** which `stranded=` parameter should you use for counting your reads for a future differential gene expression analyses. Include any commands/scripts used. Briefly describe your evidence, using quantitative statements (e.g. "I propose that these data are/are not strand-specific, because X% of the reads are y, as opposed to z."). This [kit](https://www.revvity.com/product/nex-rapid-dir-rna-seq-kit-2-0-8rxn-nova-5198-01) was used during library preparation. This [paper](https://academic.oup.com/bfg/article/19/5-6/339/5837822) may provide helpful information.
 
